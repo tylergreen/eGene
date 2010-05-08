@@ -95,11 +95,6 @@ crossover_aux(X, _) -> X.
 rtree(0) -> {const, random:uniform(100)};
 rtree(N) -> {node, {randomfn(), [ rtree(N-1), rtree(N-1) ]}}.
     
-
-
-
-
-
 % rtree() -> foldl
 
 atree() ->
