@@ -36,7 +36,7 @@ eql([X, Y]) -> X == Y.
 
 % random binary fun!  Want to make this more general
 randomfn() ->
-    Fns = [fun add/1, fun sub/1, fun mult/1, fun grt/1, fun eql/1],
+    Fns = [fun add/1, fun sub/1, fun mult/1],
     N = random:uniform(length(Fns)),
     lists:nth(N, Fns).
 
@@ -64,7 +64,7 @@ mutate({node, {_, Args}}) -> one_of(Args).
 % High 0.7
 -define(Threshold, 0.5).
 
-% mating
+% mating -- Tricky part, a non-trivial tree walk that should be expressed more simply
 % takes two trees as input and traverses down both of them
 
 crossover({node, {F, Args1}},{node, {_, Args2}}) ->   
@@ -90,7 +90,15 @@ crossover_aux({node, {F, Args1}},{node, {_, Args2}}) ->
     end;
 crossover_aux(X, _) -> X.
 
-% random tree
+% random tree -- builds a random tree of depth n
+% doesn't build for ifstmt or greater than
+rtree(0) -> {const, random:uniform(100)};
+rtree(N) -> {node, {randomfn(), [ rtree(N-1), rtree(N-1) ]}}.
+    
+
+
+
+
 
 % rtree() -> foldl
 
